@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openproject
+  labels:
+    name: openproject
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 32276
+      protocol: TCP
+  selector:
+    name: openproject
+  type: NodePort

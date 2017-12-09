@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgresql
+  labels:
+    name: postgresql
+spec:
+  containers:
+    - name: postgresql
+      image: postgres
+      env:
+        - name: POSTGRES_USER
+          value: openproject
+        - name: POSTGRES_PASSWORD
+          value: password
+        - name: POSTGRES_DB
+          value: openproject_db
+      ports:
+        - containerPort: 5432
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: postgres-data
+      livenessProbe:
+        tcpSocket:
+          port: 5432
+        initialDelaySeconds: 300
+        timeoutSeconds: 5
+  volumes:
+    - name: postgres-data
+      persistentVolumeClaim:
+       claimName: nfs-openproject-claim1
